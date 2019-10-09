@@ -20,7 +20,7 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-  target-branch: gh-pages
-  local-dir: dist
-  svript:
+  target_branch: gh-pages
+  local_dir: dist
+  script:
     ./node_modules/.bin/gh-pages -d build/ -b gh-pages -r git@github.com:${TRAVIS_REPO_SLUG}.git
