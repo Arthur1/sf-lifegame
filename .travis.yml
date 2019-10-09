@@ -16,9 +16,11 @@ before_install:
 install:
   - npm install
 deploy:
-  provider: pages
+  provider: script
   skip_cleanup: true
-  keep_history: true
   on:
     branch: master
+  target-branch: gh-pages
   local-dir: dist
+  svript:
+    ./node_modules/.bin/gh-pages -d build/ -b gh-pages -r git@github.com:${TRAVIS_REPO_SLUG}.git
