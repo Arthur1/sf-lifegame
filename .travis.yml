@@ -16,12 +16,10 @@ before_install:
 install:
   - npm install
 deploy:
-  provider: script
-  skip_cleanup: true
-  on:
-    branch: master
-  target_branch: gh-pages
-  local_dir: dist
-  script:
-    - npm run build
-    - ./node_modules/.bin/gh-pages -d dist/ -b gh-pages -r git@github.com:${TRAVIS_REPO_SLUG}.git
+  - provider: script
+    skip_cleanup: true
+    on:
+      branch: master
+    script:
+      - npm run build
+      - ./node_modules/.bin/gh-pages -d dist/ -b gh-pages -r git@github.com:${TRAVIS_REPO_SLUG}.git
