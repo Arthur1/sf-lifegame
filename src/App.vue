@@ -6,15 +6,16 @@
         セルをタッチすると生と死が切り替わります
       </p>
       <div class="row">
-        <div class="col s12 m8 input-field">
-          <select v-on:change="changePreset()" v-model="preset" lazy>
+        <div class="col s12 m8">
+          <label>プリセット</label>
+          <select v-on:change="changePreset()" class="browser-default" v-model="preset">
             <option value="" disabled selected>[未選択]</option>
             <option value="breed">繁殖</option>
             <option value="spaceship">宇宙船</option>
             <option value="galaxy">銀河</option>
             <option value="random">ランダム</option>
           </select>
-          <label>プリセット</label>
+          
         </div>
         <div class="col s12 m4 input-field">
           <button class="btn red" @click="reset()"><i class="material-icons left">delete_forever</i>リセット</button>
@@ -28,7 +29,7 @@
       <div class="cellTable">
         <div v-for="i in 25" :key="'cellRow_'+i" class="cellRow">
           <div v-for="j in 25" :key="'cell_'+i+'_'+j" class="cellBox">
-            <input type="checkbox" v-model="cell[i][j]" :id="'cell_'+i+'_'+j" class="cell">
+            <input type="checkbox" v-model="cell[i][j]" v-on:change="resetPresetValue()" :id="'cell_'+i+'_'+j" class="cell">
             <label :id="'cellLabel_'+i+'_'+j" :for="'cell_'+i+'_'+j" class="cellLabel"></label>
           </div>
         </div>
@@ -46,6 +47,7 @@ export default {
       cell: Array.apply(null, Array(26)).map(() => Array(26).fill(false)),
       playID: null,
       preset: "",
+      presetFlag: false,
     }
   },
   mounted() {
@@ -96,7 +98,7 @@ export default {
       }
       return count
     },
-    async changePreset() {
+    changePreset() {
       this.reset()
       switch (this.preset) {
         case "breed":
@@ -112,8 +114,12 @@ export default {
           this.presetRandom()
           break
       }
-      await this.$nextTick()
+      this.presetFlag = true
+    },
+    resetPresetValue() {
+      if (! this.presetFlag) return
       this.preset = ""
+      this.presetFlag = false
     },
     reset() {
       this.cell = Array.apply(null, Array(26)).map(() => Array(26).fill(false))
