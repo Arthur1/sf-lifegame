@@ -7,7 +7,7 @@
       </p>
       <div class="row">
         <div class="col s12 m8 input-field">
-          <select v-on:change="changePreset()" v-model="preset">
+          <select v-on:change="changePreset()" v-model="preset" lazy>
             <option value="" disabled selected>[未選択]</option>
             <option value="breed">繁殖</option>
             <option value="spaceship">宇宙船</option>
@@ -96,7 +96,7 @@ export default {
       }
       return count
     },
-    changePreset() {
+    async changePreset() {
       this.reset()
       switch (this.preset) {
         case "breed":
@@ -112,6 +112,7 @@ export default {
           this.presetRandom()
           break
       }
+      await this.$nextTick()
       this.preset = ""
     },
     reset() {
